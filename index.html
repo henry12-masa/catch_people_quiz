@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>釣りタイトル判定クイズ</title>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8398161859137802"
+ crossorigin="anonymous"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+  color:#fff;
+}
+.container{
+  max-width:760px;
+  margin:auto;
+  padding:24px;
+}
+.card{
+  background:#111827;
+  border-radius:22px;
+  padding:24px;
+  box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+h1{
+  text-align:center;
+  font-size:28px;
+}
+.badge{
+  text-align:center;
+  color:#93c5fd;
+  font-weight:bold;
+}
+.question{
+  margin:24px 0;
+  padding:24px;
+  background:#020617;
+  border-radius:18px;
+  font-size:22px;
+  line-height:1.6;
+  text-align:center;
+}
+.buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+button{
+  border:none;
+  border-radius:16px;
+  padding:16px;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.good{background:#22c55e;color:#052e16}
+.bad{background:#f97316;color:#431407}
+.next{background:#38bdf8;color:#082f49;width:100%;margin-top:16px}
+.result{
+  margin-top:20px;
+  padding:18px;
+  border-radius:16px;
+  background:#1e293b;
+  line-height:1.7;
+}
+.score{
+  text-align:center;
+  margin:18px 0;
+  font-size:18px;
+}
+.ad{
+  margin:22px 0;
+  background:#fff;
+  border-radius:14px;
+  padding:8px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>🎣 釣りタイトル判定クイズ</h1>
+  <p class="badge">これは読者を引きつけるタイトル？それとも釣り？</p>
+
+  <div class="ad">
+    <!-- UIゲーム -->
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-8398161859137802"
+      data-ad-slot="6325875393"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <div class="card">
+    <div class="score" id="score">第1問 / 20問　正解数：0</div>
+    <div class="question" id="question"></div>
+
+    <div class="buttons">
+      <button class="good" onclick="answer('safe')">普通のタイトル</button>
+      <button class="bad" onclick="answer('bait')">釣りタイトル</button>
+    </div>
+
+    <div class="result" id="result" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    title:"【衝撃】この事実を知らない人は人生損してます",
+    answer:"bait",
+    reason:"内容が不明確で、不安を強く煽ってクリックさせる表現です。"
+  },
+  {
+    title:"初心者向け｜ブログ記事タイトルの付け方を5つ紹介",
+    answer:"safe",
+    reason:"内容が具体的で、読者が何を得られるか分かります。"
+  },
+  {
+    title:"医師が絶対に食べない危険な食品ランキング",
+    answer:"bait",
+    reason:"『絶対』『危険』など断定と不安を煽る表現が強めです。"
+  },
+  {
+    title:"節約初心者が最初に見直すべき固定費3選",
+    answer:"safe",
+    reason:"対象者と内容が明確で、過度な煽りがありません。"
+  },
+  {
+    title:"99%の人が間違えているスマホの使い方",
+    answer:"bait",
+    reason:"根拠不明の大きな数字で不安を煽っています。"
+  },
+  {
+    title:"在宅ワークを始める前に確認したい注意点",
+    answer:"safe",
+    reason:"誇張せず、読者に役立つ内容が想像できます。"
+  },
+  {
+    title:"これを知らないと将来かなりヤバいです",
+    answer:"bait",
+    reason:"何がヤバいのか分からず、不安だけを刺激しています。"
+  },
+  {
+    title:"副業ブログで最初に書くべき記事ジャンルとは",
+    answer:"safe",
+    reason:"テーマが明確で、クリック後の内容も予想しやすいです。"
+  },
+  {
+    title:"芸能界が震えた本当の理由…",
+    answer:"bait",
+    reason:"曖昧な余韻で中身を隠してクリックを誘っています。"
+  },
+  {
+    title:"一人暮らしにおすすめの時短家電7選",
+    answer:"safe",
+    reason:"対象・内容・数が明確で、自然なタイトルです。"
+  },
+  {
+    title:"【閲覧注意】知らない方がよかった真実",
+    answer:"bait",
+    reason:"恐怖や好奇心を過剰に煽る典型的な釣り表現です。"
+  },
+  {
+    title:"転職面接でよく聞かれる質問と答え方",
+    answer:"safe",
+    reason:"検索意図に合っていて、内容も具体的です。"
+  },
+  {
+    title:"この画像、違和感に気づけたら天才です",
+    answer:"bait",
+    reason:"『天才』など感情を刺激してクリックを狙う表現です。"
+  },
+  {
+    title:"雨の日にできる室内遊びアイデア10選",
+    answer:"safe",
+    reason:"読者の状況と解決策が明確です。"
+  },
+  {
+    title:"実は日本人のほとんどが知らない危険な習慣",
+    answer:"bait",
+    reason:"『ほとんどが知らない』『危険』で不安を煽っています。"
+  },
+  {
+    title:"初心者でも分かるNISAの基本と注意点",
+    answer:"safe",
+    reason:"テーマと対象が明確で、誇張がありません。"
+  },
+  {
+    title:"まさかの結末にネット騒然",
+    answer:"bait",
+    reason:"何の話か分からず、曖昧な驚きだけで誘導しています。"
+  },
+  {
+    title:"朝の時間を有効活用する習慣5つ",
+    answer:"safe",
+    reason:"具体的で読者にとって実用的なタイトルです。"
+  },
+  {
+    title:"成功者だけが知っている秘密の方法",
+    answer:"bait",
+    reason:"『成功者だけ』『秘密』など特別感で煽っています。"
+  },
+  {
+    title:"ブログ初心者が避けたいタイトルの失敗例",
+    answer:"safe",
+    reason:"内容が具体的で、読者の学びにつながるタイトルです。"
+  }
+];
+
+let index = 0;
+let correct = 0;
+let answered = false;
+
+function showQuestion(){
+  answered = false;
+  document.getElementById("question").textContent = questions[index].title;
+  document.getElementById("result").style.display = "none";
+  document.getElementById("score").textContent =
+    `第${index + 1}問 / ${questions.length}問　正解数：${correct}`;
+}
+
+function answer(choice){
+  if(answered) return;
+  answered = true;
+
+  const q = questions[index];
+  const isCorrect = choice === q.answer;
+  if(isCorrect) correct++;
+
+  const result = document.getElementById("result");
+  result.style.display = "block";
+  result.innerHTML = `
+    <strong>${isCorrect ? "⭕ 正解！" : "❌ 不正解！"}</strong><br>
+    正解：${q.answer === "bait" ? "釣りタイトル" : "普通のタイトル"}<br>
+    ${q.reason}
+  `;
+
+  setTimeout(() => {
+    index++;
+    if(index < questions.length){
+      showQuestion();
+    } else {
+      showFinal();
+    }
+  }, 1800);
+}
+
+function showFinal(){
+  const rate = Math.round(correct / questions.length * 100);
+  document.querySelector(".card").innerHTML = `
+    <h2 style="text-align:center;">結果発表 🎉</h2>
+    <div class="question">
+      ${questions.length}問中 ${correct}問正解！<br>
+      正解率 ${rate}%
+    </div>
+    <div class="result">
+      ${
+        rate >= 80 ? "あなたは釣りタイトルをかなり見抜けています。SNSやニュースの煽りにも強いタイプです。" :
+        rate >= 50 ? "なかなか良い判定力です。ただし、強い言葉や曖昧な表現にはもう少し注意しましょう。" :
+        "釣りタイトルに引っかかりやすいかもしれません。『衝撃』『絶対』『知らないと損』には注意です。"
+      }
+    </div>
+    <button class="next" onclick="location.reload()">もう一度遊ぶ</button>
+  `;
+}
+
+showQuestion();
+</script>
+</body>
+</html>
